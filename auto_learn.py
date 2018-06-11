@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/ python
 # -*- coding: utf-8 -*-
 # Author YangHengyu
 # creation date 2018-05-25
@@ -9,6 +9,9 @@ import random
 import time
 import os
 
+import datetime
+
+import sys
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
@@ -96,34 +99,45 @@ class AutoLearn:
         # 点击课程学习按钮
         study_btn = self.browser.find_element_by_xpath('//*[@id="UpdatePanel1"]//td[4]/p[1]/a')
         study_btn.click()
-        time.sleep(5)
+        time.sleep(1)
 
         # 可能提示其他窗口有正在学习
         try:
             alert = self.browser.switch_to.alert
-            print alert.text
-            time.sleep(2)
+            # print alert.text
             alert.accept()
         except Exception as e:
-            print e
+            try:
+                self.browser.switch_to.alert.accept()
+            except Exception:
+                time.sleep(1)
+            print '时间：', datetime.datetime.now(), e
             time.sleep(1)
 
+        time.sleep(2)
         self.write_comments()
 
         # 每15分钟会弹窗提示是否继续学习
         while n < 2900:
             # self.browser.implicitly_wait(n)
-            time.sleep(901)
-            # 如果15分钟的警告框出来了，点击确定并
+            time.sleep(1261)
+            # 如果15分钟的警告框出来了，点击确定继续
             try:
-                alert = self.browser.switch_to.alert()
+                alert = self.browser.switch_to.alert
                 print alert.text
                 time.sleep(2)
                 alert.accept()
                 n += 900
             except Exception as e:
-                print e
+                print '时间：', datetime.datetime.now(), e
                 n += 10
+
+        try:
+            sys.exit(0)
+        except:
+            print('Program is dead.')
+        finally:
+            print(u'本节课学习完毕')
 
     # 填写学习记录
     def write_comments(self):
@@ -195,7 +209,7 @@ class AutoLearn:
 
         comments_num = len(comments[comment_type])
         print comments_num
-        i = random.randint(0, comments_num)
+        i = random.randint(0, comments_num-1)
 
         return comments[comment_type][i]
 
@@ -206,7 +220,7 @@ if __name__ == '__main__':
     auto_learn.login()
     time.sleep(2)
     auto_learn.courses_study()
-    auto_learn.write_comments()
+    # auto_learn.write_comments()
 
 
 

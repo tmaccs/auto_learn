@@ -118,26 +118,29 @@ class AutoLearn:
         self.write_comments()
 
         # 每15分钟会弹窗提示是否继续学习
-        while n < 2900:
-            # self.browser.implicitly_wait(n)
-            time.sleep(1261)
-            # 如果15分钟的警告框出来了，点击确定继续
+        while n < 3300:
+            # 每60秒检查一次有没有弹窗
+            time.sleep(60)
+            # 如果15分钟的警告框出来了，点击确定继续并且睡眠14分钟
             try:
                 alert = self.browser.switch_to.alert
                 print alert.text
                 time.sleep(2)
                 alert.accept()
-                n += 900
+                if alert.text == u'该课程已完成并获取学时！':
+                    break
+                time.sleep(600)
+                n += 600
             except Exception as e:
                 print '时间：', datetime.datetime.now(), e
-                n += 10
+                n += 60
 
         try:
             sys.exit(0)
         except:
             print('Program is dead.')
         finally:
-            print(u'本节课学习完毕')
+            print('auto_learn_well_down')
 
     # 填写学习记录
     def write_comments(self):

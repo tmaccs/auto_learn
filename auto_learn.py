@@ -24,14 +24,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 class AutoLearn:
-    def __init__(self, account, password, subject):
-        self._name = "AutoLearn"
-        self.browser = self.enable_flash()
-        self.account = account
-        self.password = password
-        self.subject = subject
 
-        self.learning_status = {}
 
     
 
